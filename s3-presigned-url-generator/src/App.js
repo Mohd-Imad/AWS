@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './App.css'; // Import your custom CSS file
 
 const App = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,26 +18,31 @@ const App = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         "https://m4mkv9q3tj.execute-api.ap-south-1.amazonaws.com/test/gen_presigned_url",
         { name: selectedFile.name }
       );
 
-      console.log(response);
-      setPresignedUrl(response.data.presignedUrl);
+      console.log(response.data.body);
+      setPresignedUrl(response.data.body);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} required />
-      <button onClick={getPresignedURL}>Generate PreSigned URL</button>
+    <div className="container">
+      <div className="input-container">
+        <input type="file" id="fileInput" onChange={handleFileChange} required />
+        <label htmlFor="fileInput">Select File</label>
+      </div>
+      <div className="button-container">
+        <button onClick={getPresignedURL}>Generate PreSigned URL</button>
+      </div>
       {presignedUrl && (
-        <div>
-          <p>Generated PreSigned URL:</p>
-          <a href={presignedUrl} target="_blank" rel="noopener noreferrer">Upload File</a>
+        <div className="generated-url-container">
+          <h5>Generated PreSigned URL:</h5>
+          <p className="generated-url">{JSON.stringify(presignedUrl)}</p>
         </div>
       )}
     </div>
