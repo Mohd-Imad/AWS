@@ -18,15 +18,17 @@ const App = () => {
     }
 
     try {
-      const response = await axios.get(
-        "https://m4mkv9q3tj.execute-api.ap-south-1.amazonaws.com/test/gen_presigned_url",
-        { name: selectedFile.name }
+      const response = await axios.post(
+        "https://m4mkv9q3tj.execute-api.ap-south-1.amazonaws.com/test/gen_new_ps_url",
       );
-
-      console.log(response.data.body);
-      setPresignedUrl(response.data.body);
+      let name = selectedFile.name
+        console.log(response)
+      setPresignedUrl({ result: { imageUrl: response.data.body, imageName: name } });
+      // console.log(presignedUrl.result)
+      // console.log(presignedUrl.result.imageUrl)
+      // console.log(presignedUrl.result.imageName)
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
     }
   };
 
@@ -42,7 +44,7 @@ const App = () => {
       {presignedUrl && (
         <div className="generated-url-container">
           <h5>Generated PreSigned URL:</h5>
-          <p className="generated-url">{JSON.stringify(presignedUrl)}</p>
+          <p className="generated-url">{JSON.stringify(presignedUrl.result)}</p>
         </div>
       )}
     </div>

@@ -21,10 +21,10 @@ const App = () => {
 
   const handleImageChange = async (event) => {
     setProductImage(event.target.files[0]);
-    const response = await axios.get(
+    const response = await axios.post(
       "https://m4mkv9q3tj.execute-api.ap-south-1.amazonaws.com/test/gen_presigned_url",
     );
-    var finalUrl = JSON.parse(response.data.body).presignedUrl
+    var finalUrl = response.data.body
     setProductImage(finalUrl);
     console.log(finalUrl);
     // console.log(response.data.body);
